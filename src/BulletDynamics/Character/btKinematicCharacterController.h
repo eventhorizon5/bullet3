@@ -195,6 +195,10 @@ public:
 
 	bool onGround() const;
 	void setUpInterpolate(bool value);
+	void setShape(btConvexShape* shape)
+	{
+		m_convexShape = shape;
+	}
 };
 
 #endif  // BT_KINEMATIC_CHARACTER_CONTROLLER_H
