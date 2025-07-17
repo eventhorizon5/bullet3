@@ -197,7 +197,7 @@ bool btKinematicCharacterController::recoverFromPenetration(btCollisionWorld* co
 
 	m_currentPosition = m_ghostObject->getWorldTransform().getOrigin();
 
-	//	btScalar maxPen = btScalar(0.0);
+	btScalar maxPen = btScalar(0.0);
 	for (int i = 0; i < m_ghostObject->getOverlappingPairCache()->getNumOverlappingPairs(); i++)
 	{
 		m_manifoldArray.resize(0);
@@ -229,12 +229,11 @@ bool btKinematicCharacterController::recoverFromPenetration(btCollisionWorld* co
 				if (dist < -m_maxPenetrationDepth)
 				{
 					// TODO: cause problems on slopes, not sure if it is needed
-					//if (dist < maxPen)
-					//{
-					//	maxPen = dist;
-					//	m_touchingNormal = pt.m_normalWorldOnB * directionSign;//??
-
-					//}
+					if (dist < maxPen)
+					{
+						maxPen = dist;
+						m_touchingNormal = pt.m_normalWorldOnB * directionSign;//??
+					}
 					m_currentPosition += pt.m_normalWorldOnB * directionSign * dist * btScalar(0.2);
 					penetration = true;
 				}
@@ -247,10 +246,13 @@ bool btKinematicCharacterController::recoverFromPenetration(btCollisionWorld* co
 			//manifold->clearManifold();
 		}
 	}
-	btTransform newTrans = m_ghostObject->getWorldTransform();
-	newTrans.setOrigin(m_currentPosition);
-	m_ghostObject->setWorldTransform(newTrans);
-	//	printf("m_touchingNormal = %f,%f,%f\n",m_touchingNormal[0],m_touchingNormal[1],m_touchingNormal[2]);
+	if (penetration == true)
+	{
+		btTransform newTrans = m_ghostObject->getWorldTransform();
+		newTrans.setOrigin(m_currentPosition);
+		m_ghostObject->setWorldTransform(newTrans);
+		//	printf("m_touchingNormal = %f,%f,%f\n",m_touchingNormal[0],m_touchingNormal[1],m_touchingNormal[2]);
+	}
 	return penetration;
 }
 
