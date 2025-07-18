@@ -305,9 +305,10 @@ void btKinematicCharacterController::stepUp(btCollisionWorld* world)
 				m_currentPosition = m_targetPosition;
 		}
 
-		//btTransform& xform = m_ghostObject->getWorldTransform();
-		//xform.setOrigin(m_currentPosition);
-		//m_ghostObject->setWorldTransform(xform);
+		//this code has an issue, causing the camera to "climb" when hitting a ceiling
+		/*btTransform& xform = m_ghostObject->getWorldTransform();
+		xform.setOrigin(m_currentPosition);
+		m_ghostObject->setWorldTransform(xform);
 
 		// fix penetration if we hit a ceiling for example
 		int numPenetrationLoops = 0;
@@ -321,7 +322,7 @@ void btKinematicCharacterController::stepUp(btCollisionWorld* world)
 				//printf("character could not recover from penetration = %d\n", numPenetrationLoops);
 				break;
 			}
-		}
+		}*/
 		m_targetPosition = m_ghostObject->getWorldTransform().getOrigin();
 		m_currentPosition = m_targetPosition;
 
