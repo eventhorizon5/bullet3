@@ -303,9 +303,9 @@ void btKinematicCharacterController::stepUp(btCollisionWorld* world)
 				m_currentPosition = m_targetPosition;
 		}
 
-		btTransform& xform = m_ghostObject->getWorldTransform();
-		xform.setOrigin(m_currentPosition);
-		m_ghostObject->setWorldTransform(xform);
+		//btTransform& xform = m_ghostObject->getWorldTransform();
+		//xform.setOrigin(m_currentPosition);
+		//m_ghostObject->setWorldTransform(xform);
 
 		// fix penetration if we hit a ceiling for example
 		int numPenetrationLoops = 0;
