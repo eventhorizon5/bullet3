@@ -330,7 +330,10 @@ void btKinematicCharacterController::updateTargetPositionBasedOnCollision (const
 void btKinematicCharacterController::stepForwardAndStrafe ( btCollisionWorld* collisionWorld, const btVector3& walkMove)
 {
 	if (walkMove.fuzzyZero())
+	{
+		m_targetPosition = m_currentPosition;
 		return;
+	}
 
 	// printf("m_normalizedDirection=%f,%f,%f\n",
 	// 	m_normalizedDirection[0],m_normalizedDirection[1],m_normalizedDirection[2]);
@@ -564,7 +567,12 @@ const btVector3& walkDirection
 )
 {
 	if (walkDirection.fuzzyZero())
+	{
+		m_useWalkDirection = true;
+		m_walkDirection.setZero();
+		m_normalizedDirection.setZero();
 		return;
+	}
 
 	m_useWalkDirection = true;
 	m_walkDirection = walkDirection;
