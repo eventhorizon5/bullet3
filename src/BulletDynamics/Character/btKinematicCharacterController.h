@@ -150,8 +150,8 @@ public:
 
 	void jump ();
 
-	void setGravity(btScalar gravity);
-	btScalar getGravity() const;
+	void setGravity(const btVector3 &gravity);
+	btVector3 getGravity() const;
 
 	/// The max slope determines the maximum angle that the controller can walk up.
 	/// The slope angle is measured in radians.

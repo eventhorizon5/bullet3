@@ -329,6 +329,12 @@ void btKinematicCharacterController::updateTargetPositionBasedOnCollision (const
 
 void btKinematicCharacterController::stepForwardAndStrafe ( btCollisionWorld* collisionWorld, const btVector3& walkMove)
 {
+	if (walkMove.fuzzyZero())
+	{
+		m_targetPosition = m_currentPosition;
+		return;
+	}
+
 	// printf("m_normalizedDirection=%f,%f,%f\n",
 	// 	m_normalizedDirection[0],m_normalizedDirection[1],m_normalizedDirection[2]);
 	// phase 2: forward and strafe
@@ -560,6 +566,14 @@ void btKinematicCharacterController::setWalkDirection
 const btVector3& walkDirection
 )
 {
+	if (walkDirection.fuzzyZero())
+	{
+		m_useWalkDirection = true;
+		m_walkDirection.setZero();
+		m_normalizedDirection.setZero();
+		return;
+	}
+
 	m_useWalkDirection = true;
 	m_walkDirection = walkDirection;
 	m_normalizedDirection = getNormalizedVector(m_walkDirection);
@@ -717,14 +731,14 @@ void btKinematicCharacterController::jump ()
 #endif
 }
 
-void btKinematicCharacterController::setGravity(btScalar gravity)
+void btKinematicCharacterController::setGravity(const btVector3 &gravity)
 {
-	m_gravity = gravity;
+	m_gravity = -gravity.y();
 }
 
-btScalar btKinematicCharacterController::getGravity() const
+btVector3 btKinematicCharacterController::getGravity() const
 {
-	return m_gravity;
+	return btVector3(0, -m_gravity, 0);
 }
 
 void btKinematicCharacterController::setMaxSlope(btScalar slopeRadians)
