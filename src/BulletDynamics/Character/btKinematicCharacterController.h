@@ -199,6 +199,7 @@ public:
 	{
 		m_convexShape = shape;
 	}
+	void doPenetrationRecovery(btCollisionWorld* collisionWorld);
 };
 
 #endif  // BT_KINEMATIC_CHARACTER_CONTROLLER_H

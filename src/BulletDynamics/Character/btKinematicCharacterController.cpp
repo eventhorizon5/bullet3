@@ -304,18 +304,8 @@ void btKinematicCharacterController::stepUp(btCollisionWorld* world)
 		m_ghostObject->setWorldTransform(xform);
 
 		// fix penetration if we hit a ceiling for example
-		int numPenetrationLoops = 0;
-		m_touchingContact = false;
-		while (recoverFromPenetration(world))
-		{
-			numPenetrationLoops++;
-			m_touchingContact = true;
-			if (numPenetrationLoops > 4)
-			{
-				//printf("character could not recover from penetration = %d\n", numPenetrationLoops);
-				break;
-			}
-		}*/
+		doPenetrationRecovery(world); */
+
 		m_targetPosition = m_ghostObject->getWorldTransform().getOrigin();
 		m_currentPosition = m_targetPosition;
 
@@ -831,18 +821,7 @@ void btKinematicCharacterController::playerStep(btCollisionWorld* collisionWorld
 	xform.setOrigin(m_currentPosition);
 	m_ghostObject->setWorldTransform(xform);
 
-	int numPenetrationLoops = 0;
-	m_touchingContact = false;
-	while (recoverFromPenetration(collisionWorld))
-	{
-		numPenetrationLoops++;
-		m_touchingContact = true;
-		if (numPenetrationLoops > 4)
-		{
-			//printf("character could not recover from penetration = %d\n", numPenetrationLoops);
-			break;
-		}
-	}
+	doPenetrationRecovery(collisionWorld);
 }
 
 void btKinematicCharacterController::setFallSpeed(btScalar fallSpeed)
@@ -989,4 +968,21 @@ btQuaternion btKinematicCharacterController::getRotation(btVector3& v0, btVector
 	}
 
 	return shortestArcQuatNormalize2(v0, v1);
+}
+
+void btKinematicCharacterController::doPenetrationRecovery(btCollisionWorld* collisionWorld)
+{
+	int numPenetrationLoops = 0;
+	m_touchingContact = false;
+
+	while (recoverFromPenetration (collisionWorld))
+	{
+		numPenetrationLoops++;
+		m_touchingContact = true;
+		if (numPenetrationLoops > 4)
+		{
+			//printf("character could not recover from penetration = %d\n", numPenetrationLoops);
+			break;
+		}
+	}
 }
